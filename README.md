@@ -1,66 +1,32 @@
-# 鸿蒙套壳网页 APP（ArkWeb）
+# 鸿蒙套壳网易云音乐（ArkWeb）
 
-基于 **ArkWeb** 制作的鸿蒙套壳网页 APP，支持打包常用网页为原生应用。
-
----
-
-## 🔗 内置 Demo 链接（`src/main/ets/pages/Index.ets`）
-
-当前已集成 5 个常用网页，默认启用 **飞书**，其余已注释，可自行修改：
-
-```ts
-// 飞书（默认启用)
-const url = "https://web.feishu.cn";
-
-// 网易云音乐
-// const url = "https://music.163.com";
-
-// 哔哩哔哩
-// const url = "https://www.bilibili.com";
-
-// DeepSeek
-// const url = "https://chat.deepseek.com";
-
-// 阿里巴巴矢量图标库
-// const url = "https://www.iconfont.cn";
-```
+基于 **ArkWeb** 制作的网易云音乐 APP。
 
 ---
 
-## 🛠️ 自定义配置
+## 🔗 内置网页版链接（`src/main/ets/pages/Index.ets`）
 
-完成 URL 设定后，需同步修改以下文件，确保图标、名称、包名一致：
-
-| 文件路径 | 作用 |
-| --- | --- |
-| `src/main/resources/base/media/layered_image.json` | APP 图标 |
-| `src/main/resources/base/element/string.json` | 应用名称等资源 |
-| `AppScope/app.json5` | 全局配置 |
-| `AppScope/resources/base/element/string.json` | 应用名称等资源 |
-
----
+const url = "https://music.163.com/st/webplayer";  //网易云音乐
 
 ## ✨ 功能特性
 
 | 功能 | 说明 |
 | --- | --- |
-| 🌗 深色 / 浅色模式 | 根据系统主题自动切换 |
-| 📏 标题栏高度调节 | 默认隐藏系统标题栏，可自定义高度 |
-| 📱 多设备适配 | 支持鸿蒙 Next PC、手机、平板 |
-| ⬅️ 标题栏操作 | 返回、刷新按钮 |
-| 🖱️ 右键菜单 | 支持复制、粘贴、复制图片、复制链接等 |
-| ⬇️ 单线程下载 | 监听下载事件并打开下载窗口 |
+| 🌗 深色 / 浅色模式 | 根据网页主题自动切换右上三键 |
+| 📏 右上三键美化 | 默认隐藏系统标题栏，可自由拖拽，通过网页注入实现右上三键无遮挡 |
+| 📱 多设备适配 | 支持鸿蒙 Next PC、平板 |
 | 🍪 Cookie 管理 | 自动保存 |
 
 ---
 
 ## 📸 效果图
+![screenshot_20260102_232436](https://github.com/user-attachments/assets/7439e6f8-2a93-4a54-b119-99f22fb1abfd)
 
-<img width="2096" height="1396" alt="image" src="https://github.com/user-attachments/assets/4b2e30e6-dd89-4175-bdf8-75647abdd4ad" />
-<img width="2096" height="1402" alt="image" src="https://github.com/user-attachments/assets/b0d562e2-ee3b-4165-87ce-210e88f029d2" />
-<img width="2094" height="1398" alt="image" src="https://github.com/user-attachments/assets/e9b24b17-46e2-4d63-8961-b9a17066dab2" />
-<img width="2092" height="1406" alt="image" src="https://github.com/user-attachments/assets/71a63d76-02f5-4735-8c83-a4882cdb15ac" />
-<img width="2094" height="1394" alt="image" src="https://github.com/user-attachments/assets/20b810df-ff1b-4616-b91c-3c09d593d7a6" />
+![screenshot_20260102_232501](https://github.com/user-attachments/assets/d79312fe-ea98-488f-b01c-77defa530d1f)
+
+![screenshot_20260102_232516](https://github.com/user-attachments/assets/fde55356-f477-4cce-9def-8a9dd46d55aa)
+
+![screenshot_20260102_232527](https://github.com/user-attachments/assets/68ed9cad-2e26-442b-a7d7-a2de38cbfe61)
 
 > 如有更多需求，欢迎提 Issue 或 Pull Request！
 
