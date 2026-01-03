@@ -5,10 +5,13 @@ import { BusinessError } from '@kit.BasicServicesKit';
 import { deviceInfo } from '@kit.BasicServicesKit';
 import { webview } from '@kit.ArkWeb';
 import { emitter } from '@kit.BasicServicesKit';
+import { AVSessionService } from '../service/AVSessionService';
 
 const DOMAIN = 0x0000;
 
 export default class EntryAbility extends UIAbility {
+  private avSessionService: AVSessionService = AVSessionService.getInstance();
+
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
     this.context.getApplicationContext().setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET);
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onCreate');
@@ -20,10 +23,23 @@ export default class EntryAbility extends UIAbility {
     webview.WebviewController.enableBackForwardCache(features);
     webview.WebviewController.initializeWebEngine();
     AppStorage.setOrCreate("abilityWant", want);
+
+    // 初始化 AVSession
+    this.avSessionService.initialize(this.context).then(() => {
+      hilog.info(DOMAIN, 'testTag', '%{public}s', 'AVSession initialized successfully');
+    }).catch((err: BusinessError) => {
+      hilog.error(DOMAIN, 'testTag', 'Failed to initialize AVSession: %{public}s', JSON.stringify(err));
+    });
   }
 
   onDestroy(): void {
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onDestroy');
+    // 销毁 AVSession
+    this.avSessionService.destroy().then(() => {
+      hilog.info(DOMAIN, 'testTag', '%{public}s', 'AVSession destroyed successfully');
+    }).catch((err: BusinessError) => {
+      hilog.error(DOMAIN, 'testTag', 'Failed to destroy AVSession: %{public}s', JSON.stringify(err));
+    });
   }
 
   onWindowStageCreate(windowStage: window.WindowStage): void {

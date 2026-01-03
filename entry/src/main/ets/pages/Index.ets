@@ -7,6 +7,7 @@ import { IAbstractDownloadHandler } from '../delegate/IWebDownloadFile'
 import { WebDownloadFileHelper } from '../delegate/WebDownloadFileImpl'
 import { EmitterUtil } from '../utiles/EmitterUtil'
 import { emitter } from '@kit.BasicServicesKit';
+import { WebMusicBridge, AVSessionBridgeObject } from '../service/WebMusicBridge';
 
 const url = "https://music.163.com/st/webplayer";  //网易云音乐
 
@@ -60,6 +61,9 @@ struct WebComponent {
 
   // 创建Web组件。
   controller: webview.WebviewController = new webview.WebviewController();
+  // AVSession 桥接
+  private musicBridge: WebMusicBridge = new WebMusicBridge(this.controller);
+  @State avSessionBridgeObject: AVSessionBridgeObject = this.musicBridge.getBridgeObject();
   @State webDownloadFile: IAbstractDownloadHandler = new WebDownloadFileHelper()
   downloadWebLoading: CustomDialogController = new CustomDialogController({
     //Web页面加载的弹窗控制器
@@ -393,6 +397,13 @@ struct WebComponent {
       .mixedMode(MixedMode.All)
       .horizontalScrollBarAccess(false) //隐藏横向滚动条
       .verticalScrollBarAccess(false)  //隐藏纵向滚动条
+      // 注册 AVSession 桥接对象到网页
+      .javaScriptProxy({
+        object: this.avSessionBridgeObject,
+        name: "__avSessionBridge",
+        methodList: this.musicBridge.getBridgeMethodList(),
+        controller: this.controller
+      })
       .onVisibleAreaChange([0, 1.0], (isVisible) => {
         this.webIsVisible = isVisible;
         if (isVisible && this.needReloadWhenVisible) { // Web组件可见时重新加载页面。
@@ -400,9 +411,11 @@ struct WebComponent {
           this.controller.loadUrl(url);
         }
       })
-      //js注入，实现右上角图标的避开
+      //js注入，实现右上角图标的避开和AVSession音乐监听
       .onPageEnd(() => {
         this.injectCustomJS();
+        // 注入 AVSession 音乐监听器
+        this.musicBridge.injectMusicMonitor();
         setInterval(() => {
           this.detectBgColorAndSwitchMode();
         }, 300);
